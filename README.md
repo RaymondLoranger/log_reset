@@ -17,6 +17,7 @@ end
 ## Usage
 
 ```elixir
+...
 alias Log.Reset
 
 @error_path Application.get_env(:logger, :error_log)[:path]
@@ -26,7 +27,8 @@ alias Log.Reset
 @spec start(Application.start_type(), term) :: {:ok, pid}
 def start(_type, :ok) do
   unless Mix.env() == :test do
-    [@error_path, @info_path, @warn_path] |> Enum.each(&LogReset.clear_log/1)
+    [@error_path, @info_path, @warn_path] |> Enum.each(&Reset.clear_log/1)
   end
 ...
 end
+...
