@@ -7,6 +7,8 @@ defmodule Log.Reset do
   Creates and clears log files.
   """
   @spec clear_log(Path.t()) :: :ok
+  def clear_log(nil), do: :ok
+
   def clear_log(log_path) do
     log_path = Path.expand(log_path)
     dir_path = Path.dirname(log_path)
