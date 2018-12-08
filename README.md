@@ -1,6 +1,6 @@
 # Log Reset
 
-Creates and clears log files.
+Creates and clears a log file.
 
 ## Installation
 
