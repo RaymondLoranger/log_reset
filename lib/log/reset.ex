@@ -1,12 +1,12 @@
 defmodule Log.Reset do
   @moduledoc """
-  Creates and clears log files.
+  Creates and clears a log file.
   """
 
   @doc """
-  Creates and clears log files.
+  Creates and clears a log file.
   """
-  @spec clear_log(Path.t()) :: :ok
+  @spec clear_log(Path.t() | nil) :: :ok
   def clear_log(nil), do: :ok
 
   def clear_log(log_path) do
