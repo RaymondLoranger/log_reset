@@ -42,7 +42,7 @@ alias Log.Reset
 
 def clear_all_log_files() do
   unless Mix.env() == :test do
-    Reset.log_files() |> Enum.each(&Reset.clear_log/1)
+    Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
   end
 end
 ```
