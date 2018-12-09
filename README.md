@@ -16,18 +16,36 @@ end
 
 ## Usage
 
-This app will create and clear all configured log files at startup.
-It can also be done programmatically as shown in the example below.
+This app will create and clear __all__ configured log files automatically at startup.
+
+Afterwords it can be done selectively or globally as shown in the following examples.
+
+## Example 1
 
 ```elixir
 alias Log.Reset
 
 @error_path Application.get_env(:logger, :error_log)[:path]
 @info_path Application.get_env(:logger, :info_log)[:path]
-@warn_path Application.get_env(:logger, :warn_log)[:path]
 
 def clear_log_files() do
   unless Mix.env() == :test do
-    [@error_path, @info_path, @warn_path] |> Enum.each(&Reset.clear_log/1)
+    [@error_path, @info_path] |> Enum.each(&Reset.clear_log/1)
   end
 end
+```
+
+## Example 2
+
+```elixir
+alias Log.Reset
+
+def clear_all_log_files() do
+  unless Mix.env() == :test do
+    Reset.log_files() |> Enum.each(&Reset.clear_log/1)
+  end
+end
+```
+
+
+
