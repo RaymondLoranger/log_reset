@@ -18,7 +18,7 @@ end
 
 This app will create and clear __all__ configured log files automatically at startup.
 
-Afterwords it can be done selectively or globally as shown in the following examples.
+Afterwards it can be done selectively or globally as shown in the following examples.
 
 ## Example 1
 
