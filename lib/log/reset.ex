@@ -1,6 +1,6 @@
 defmodule Log.Reset do
   @moduledoc """
-  Creates and clears a log file.
+  Creates and clears configured log files.
   """
 
   @doc """
@@ -18,6 +18,16 @@ defmodule Log.Reset do
       :ok -> :ok
       {:error, reason} -> error(reason, "Couldn't clear log file", log_path)
     end
+  end
+
+  @doc """
+  Lists all configured log paths.
+  """
+  @spec log_paths :: [Path.t()]
+  def log_paths do
+    Application.get_all_env(:logger)
+    |> Stream.filter(fn {_key, value} -> Keyword.keyword?(value) end)
+    |> Enum.map(fn {_key, value} -> value[:path] end)
   end
 
   ## Private functions
