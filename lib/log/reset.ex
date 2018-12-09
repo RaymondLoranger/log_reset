@@ -27,7 +27,8 @@ defmodule Log.Reset do
   def log_paths do
     Application.get_all_env(:logger)
     |> Stream.filter(fn {_key, value} -> Keyword.keyword?(value) end)
-    |> Enum.map(fn {_key, value} -> value[:path] end)
+    |> Stream.map(fn {_key, value} -> value[:path] end)
+    |> Enum.reject(&is_nil/1)
   end
 
   ## Private functions
