@@ -9,7 +9,7 @@ Add `log_reset` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:log_reset, github: "RaymondLoranger/log_reset"}
+    {:log_reset, "~> 0.1"}
   ]
 end
 ```
