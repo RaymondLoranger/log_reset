@@ -16,9 +16,21 @@ end
 
 ## Usage
 
-This app will create and clear __all__ configured log files automatically at startup.
+As a dependency, this app will create and clear __all__ log files configured in the parent app at startup.
 
-Afterwards it can be done selectively or globally as shown in the following examples.
+However, for this to happen, the parent app must provide the following config:
+
+```elixir
+config :log_reset, reset?: true
+```
+
+The above config could depend on the environment by invoking the usual:
+
+```elixir
+import_config "#{Mix.env()}.exs"
+```
+
+After startup, the log reset can be done selectively or globally as shown in the following examples.
 
 ## Example 1
 
