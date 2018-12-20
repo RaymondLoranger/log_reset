@@ -1,3 +1,3 @@
 use Mix.Config
 
-config :log_reset, env: :dev
+config :log_reset, reset?: true

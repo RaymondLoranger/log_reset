@@ -1,3 +1,3 @@
 use Mix.Config
 
-config :log_reset, env: :test
+config :log_reset, reset?: false
