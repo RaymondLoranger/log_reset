@@ -29,9 +29,7 @@ alias Log.Reset
 @info_path Application.get_env(:logger, :info_log)[:path]
 
 def clear_log_files() do
-  unless Mix.env() == :test do
-    [@error_path, @info_path] |> Enum.each(&Reset.clear_log/1)
-  end
+  [@error_path, @info_path] |> Enum.each(&Reset.clear_log/1)
 end
 ```
 
@@ -41,11 +39,6 @@ end
 alias Log.Reset
 
 def clear_all_log_files() do
-  unless Mix.env() == :test do
-    Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
-  end
+  Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
 end
 ```
-
-
-
