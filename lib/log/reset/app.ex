@@ -2,12 +2,13 @@ defmodule Log.Reset.App do
   @moduledoc false
 
   use Application
-  use PersistConfig
+
+  use PersistConfig,
+    files: ["config/dev.exs", "config/prod.exs", "config/test.exs"]
 
   alias __MODULE__
   alias Log.Reset
 
-  @dialyzer {:nowarn_function, start: 2}
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do
     if Application.get_env(@app, :reset?),

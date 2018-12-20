@@ -28,7 +28,14 @@ defmodule Log.Reset.MixProject do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "config/persist*.exs"],
+      files: [
+        "lib",
+        "mix.exs",
+        "README*",
+        "config/dev.exs",
+        "config/prod.exs",
+        "config/test.exs"
+      ],
       maintainers: ["Raymond Loranger"],
       licenses: ["MIT"],
       links: %{"GitHub" => source_url()}
