@@ -24,13 +24,13 @@ However, for this to happen, the parent app must provide the following config:
 config :log_reset, reset?: true
 ```
 
-The above config could depend on the environment by invoking the usual:
+The above config could depend on the runtime environment by invoking the usual:
 
 ```elixir
 import_config "#{Mix.env()}.exs"
 ```
 
-After startup, the log reset can be done selectively or globally as shown in the following examples.
+After startup, the log reset can be performed selectively or globally as shown in the following examples.
 
 ## Example 1
 
