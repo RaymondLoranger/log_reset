@@ -16,5 +16,5 @@ defmodule Log.Reset.App do
   ## Private functions
 
   @spec reset? :: boolean
-  defp reset?, do: Application.get_env(@app, :reset?)
+  defp reset?, do: Application.get_env(@app, :reset?) || false
 end
