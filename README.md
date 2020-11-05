@@ -1,6 +1,6 @@
 # Log Reset
 
-Creates and clears configured backend log files.
+Creates and clears configured log files.
 
 ## Installation
 
@@ -16,7 +16,7 @@ end
 
 ## Usage
 
-As a dependency, this app will create and clear __all__ backend log files
+As a dependency, this app will create and clear __all__ log files
 configured in the parent app at startup.
 
 However, for this to happen, the parent app must provide the following config:

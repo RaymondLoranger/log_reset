@@ -1,12 +1,12 @@
 defmodule Log.Reset do
   @moduledoc """
-  Creates and clears configured backend log files.
+  Creates and clears configured log files.
   """
 
   require Logger
 
   @doc """
-  Creates and clears a backend log file.
+  Creates and clears a log file.
   """
   @spec clear_log(Path.t() | nil) :: :ok
   def clear_log(nil), do: :ok
@@ -23,14 +23,14 @@ defmodule Log.Reset do
   end
 
   @doc """
-  Lists all configured backend log paths.
+  Lists all configured log paths.
   """
   @spec log_paths :: [Path.t() | nil]
   def log_paths do
     :logger
     |> :application.get_env(:backends, [])
-    |> Enum.map(fn {LoggerFileBackend, backend_name} ->
-      :application.get_env(:logger, backend_name, nil)[:path]
+    |> Enum.map(fn {LoggerFileBackend, id} ->
+      :application.get_env(:logger, id, nil)[:path]
     end)
   end
 
