@@ -1,13 +1,13 @@
-use Mix.Config
+import Config
 
 # Listed by ascending log level...
-# config :logger, :console,
-#   colors: [
-#     debug: :light_cyan,
-#     info: :light_green,
-#     warn: :light_yellow,
-#     error: :light_red
-#   ]
+config :logger, :console,
+  colors: [
+    debug: :light_cyan,
+    info: :light_green,
+    warn: :light_yellow,
+    error: :light_red
+  ]
 
 format = "$date $time [$level] $levelpad$message\n"
 
@@ -20,19 +20,20 @@ config :logger, :info_log, format: format, path: info_path, level: :info
 config :logger, :warn_log, format: format, path: warn_path, level: :warn
 config :logger, :error_log, format: format, path: error_path, level: :error
 
-# config :logger,
-#   backends: [
-#     # :console,
-#     {LoggerFileBackend, :info_log},
-#     {LoggerFileBackend, :warn_log},
-#     {LoggerFileBackend, :error_log}
-#   ]
+config :logger,
+  backends: [
+    # :console,
+    # :info backend should be first...
+    {LoggerFileBackend, :info_log},
+    {LoggerFileBackend, :warn_log},
+    {LoggerFileBackend, :error_log}
+  ]
 
 # Purges debug messages...
-# config :logger, compile_time_purge_level: :info
+# config :logger, compile_time_purge_matching: [[level_lower_than: :info]]
 
 # Keeps only error messages...
-# config :logger, compile_time_purge_level: :error
+# config :logger, compile_time_purge_matching: [[level_lower_than: :error]]
 
 # Uncomment to stop logging...
 # config :logger, level: :error

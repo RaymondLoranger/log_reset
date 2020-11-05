@@ -1,10 +1,12 @@
 defmodule Log.Reset do
   @moduledoc """
-  Creates and clears configured log files.
+  Creates and clears configured backend log files.
   """
 
+  require Logger
+
   @doc """
-  Creates and clears a log file.
+  Creates and clears a backend log file.
   """
   @spec clear_log(Path.t() | nil) :: :ok
   def clear_log(nil), do: :ok
@@ -15,20 +17,21 @@ defmodule Log.Reset do
     create_dir(dir_path)
 
     case File.write(log_path, "") do
-      :ok -> :ok
+      :ok -> info("Cleared log file", log_path)
       {:error, reason} -> error(reason, "Couldn't clear log file", log_path)
     end
   end
 
   @doc """
-  Lists all configured log paths.
+  Lists all configured backend log paths.
   """
-  @spec log_paths :: [Path.t()]
+  @spec log_paths :: [Path.t() | nil]
   def log_paths do
-    Application.get_all_env(:logger)
-    |> Enum.filter(fn {_key, value} -> Keyword.keyword?(value) end)
-    |> Enum.map(fn {_key, value} -> value[:path] end)
-    |> Enum.reject(&is_nil/1)
+    :logger
+    |> :application.get_env(:backends, [])
+    |> Enum.map(fn {LoggerFileBackend, backend_name} ->
+      :application.get_env(:logger, backend_name, nil)[:path]
+    end)
   end
 
   ## Private functions
@@ -41,13 +44,20 @@ defmodule Log.Reset do
     end
   end
 
+  @spec info(String.t(), Path.t()) :: :ok
+  defp info(msg, path) do
+    Logger.info("""
+    \n#{msg}:
+    #{inspect(path)}
+    """)
+  end
+
   @spec error(File.posix(), String.t(), Path.t()) :: :ok
   defp error(reason, msg, path) do
-    import IO.ANSI, only: [format: 1]
-    import IO, only: [puts: 1]
-
-    [:light_red_background, :light_white, "#{msg}:"] |> format() |> puts()
-    [:light_yellow, "#{inspect(path)}"] |> format() |> puts()
-    [:light_yellow, "=> #{:file.format_error(reason)}"] |> format() |> puts()
+    Logger.error("""
+    \n#{msg}:
+    #{inspect(path)}
+    #{:file.format_error(reason)}
+    """)
   end
 end

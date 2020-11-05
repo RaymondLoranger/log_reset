@@ -1,4 +1,4 @@
-defmodule Log.Reset.App do
+defmodule Log.Reset.TopSup do
   @moduledoc false
 
   use Application
@@ -10,11 +10,11 @@ defmodule Log.Reset.App do
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do
     if reset?(), do: Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
-    Supervisor.start_link([], name: App, strategy: :one_for_one)
+    Supervisor.start_link([], name: TopSup, strategy: :one_for_one)
   end
 
   ## Private functions
 
   @spec reset? :: boolean
-  defp reset?, do: Application.get_env(@app, :reset?, false)
+  defp reset?, do: get_env(:reset?, false)
 end

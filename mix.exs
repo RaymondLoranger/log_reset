@@ -4,15 +4,14 @@ defmodule Log.Reset.MixProject do
   def project do
     [
       app: :log_reset,
-      version: "0.1.10",
-      elixir: "~> 1.7",
+      version: "0.1.11",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Log Reset",
       source_url: source_url(),
       description: description(),
       package: package(),
-      deps: deps(),
-      dialyzer: [plt_add_apps: [:mix]]
+      deps: deps()
     ]
   end
 
@@ -28,7 +27,7 @@ defmodule Log.Reset.MixProject do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "config/persist*.exs"],
+      files: ["lib", "mix.exs", "README*"],
       maintainers: ["Raymond Loranger"],
       licenses: ["MIT"],
       links: %{"GitHub" => source_url()}
@@ -39,19 +38,19 @@ defmodule Log.Reset.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Log.Reset.App, :ok}
+      mod: {Log.Reset.TopSup, :ok}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 1.0", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:logger_file_backend, "~> 0.0.9"},
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
-      {:persist_config, "~> 0.1"},
-      {:earmark, "~> 1.0", only: :dev},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:dialyxir, "~> 0.5", only: :dev, runtime: false}
+      {:persist_config, "~> 0.4"}
     ]
   end
 end
