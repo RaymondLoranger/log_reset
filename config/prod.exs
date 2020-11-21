@@ -1,3 +1,3 @@
 import Config
 
-config :log_reset, reset?: true
+config :log_reset, reset?: false

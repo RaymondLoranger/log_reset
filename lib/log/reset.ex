@@ -29,8 +29,9 @@ defmodule Log.Reset do
   def log_paths do
     :logger
     |> :application.get_env(:backends, [])
-    |> Enum.map(fn {LoggerFileBackend, id} ->
-      :application.get_env(:logger, id, nil)[:path]
+    |> Enum.map(fn
+      {LoggerFileBackend, id} -> :application.get_env(:logger, id, nil)[:path]
+      _console? -> nil
     end)
   end
 
