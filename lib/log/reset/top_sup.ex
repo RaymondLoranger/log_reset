@@ -3,16 +3,14 @@ defmodule Log.Reset.TopSup do
   use PersistConfig
 
   alias __MODULE__
-  alias Log.Reset
+  alias Log.Reset.ConfigPathsServer, as: Server
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do
-    if reset?(), do: Reset.clear_logs()
-    Supervisor.start_link([], name: TopSup, strategy: :one_for_one)
+    [
+      # Child spec relying on `use GenServer`...
+      {Server, get_env(:levels, :all)}
+    ]
+    |> Supervisor.start_link(name: TopSup, strategy: :one_for_one)
   end
-
-  ## Private functions
-
-  @spec reset? :: boolean
-  defp reset?, do: get_env(:reset?, false)
 end

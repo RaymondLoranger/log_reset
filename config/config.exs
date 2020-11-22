@@ -6,7 +6,7 @@ import Config
 import_config "config_logger.exs"
 
 # Should be configured in the parent app...
-config :log_reset, reset?: Mix.env() in [:test]
+# config :log_reset, levels: :none
 
 # For testing purposes only...
 config :log_reset,

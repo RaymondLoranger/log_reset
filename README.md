@@ -16,13 +16,17 @@ end
 
 ## Usage
 
-As a dependency, this app will create and clear __all__ log files
+As a dependency, this app will, by default, create and clear __all__ log files
 configured in the parent app at startup.
 
-However, for this to happen, the parent app must provide the following config:
+The parent app may provide different clearing options, for example:
 
 ```elixir
-config :log_reset, reset?: true
+config :log_reset, levels: :none
+```
+
+```elixir
+config :log_reset, levels: [:error, :info]
 ```
 
 The above config could depend on the mix environment by invoking the usual:
@@ -35,22 +39,19 @@ You can also provide a `config/runtime.exs` file such as this one:
 
 ```elixir
 import Config
-config :log_reset, reset?: config_env() in [:test]
+
+config :log_reset, levels: config_env() in [:test] && :all || :none
 ```
 
-After startup, the log reset can be performed selectively or globally as shown in the following examples.
+After startup, log reset can be performed selectively or globally:
 
 ## Example 1
 
 ```elixir
 alias Log.Reset
 
-@error_path Application.get_env(:logger, :error_log)[:path]
-@info_path Application.get_env(:logger, :info_log)[:path]
-
-def clear_log_files() do
-  [@error_path, @info_path] |> Enum.each(&Reset.clear_log/1)
-end
+# Clears configured log files of levels :error and :info.
+Reset.clear_logs([:error, :info])
 ```
 
 ## Example 2
@@ -58,7 +59,6 @@ end
 ```elixir
 alias Log.Reset
 
-def clear_all_log_files() do
-  Reset.clear_logs()
-end
+# Clears all configured log files.
+Reset.clear_logs(:all)
 ```
