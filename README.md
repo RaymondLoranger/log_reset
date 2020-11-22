@@ -35,7 +35,7 @@ You can also provide a `config/runtime.exs` file such as this one:
 
 ```elixir
 import Config
-config :log_reset, reset?: config_env() in [:prod, :dev]
+config :log_reset, reset?: config_env() in [:test]
 ```
 
 After startup, the log reset can be performed selectively or globally as shown in the following examples.

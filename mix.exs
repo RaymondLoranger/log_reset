@@ -4,7 +4,7 @@ defmodule Log.Reset.MixProject do
   def project do
     [
       app: :log_reset,
-      version: "0.1.14",
+      version: "0.1.20",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Log Reset",

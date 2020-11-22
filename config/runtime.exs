@@ -1,14 +1,7 @@
 import Config
 
+# Should be set in the parent app...
 # config :log_reset, reset?: config_env() in [:test]
-reset? =
-  case config_env() do
-    env when env in [:test] -> true
-    :staging -> :indeed
-    _env -> false
-  end
-
-config :log_reset, reset?: reset?
 
 # For testing purposes only...
 config :log_reset,

@@ -24,10 +24,10 @@ config :logger, :error_log, format: format, path: error_path, level: :error
 
 config :logger,
   backends: [
-    :console,
-    # Should be in that order...
-    {LoggerFileBackend, :debug_log},
+    # :console,
+    # :info level should be first...
     {LoggerFileBackend, :info_log},
+    {LoggerFileBackend, :debug_log},
     {LoggerFileBackend, :warn_log},
     {LoggerFileBackend, :error_log}
   ]

@@ -1,6 +1,4 @@
 defmodule Log.Reset.TopSup do
-  @moduledoc false
-
   use Application
   use PersistConfig
 
