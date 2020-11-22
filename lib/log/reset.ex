@@ -9,16 +9,12 @@ defmodule Log.Reset do
   Creates and clears all log files.
   """
   @spec clear_logs :: :ok
-  def clear_logs do
-    log_paths() |> Enum.each(&clear_log/1)
-  end
+  def clear_logs, do: log_paths() |> Enum.each(&clear_log/1)
 
   @doc """
   Creates and clears a log file.
   """
-  @spec clear_log(Path.t() | nil) :: :ok
-  def clear_log(nil), do: :ok
-
+  @spec clear_log(Path.t()) :: :ok
   def clear_log(log_path) do
     log_path = Path.expand(log_path)
     dir_path = Path.dirname(log_path)
@@ -33,7 +29,7 @@ defmodule Log.Reset do
   @doc """
   Lists all configured log paths.
   """
-  @spec log_paths :: [Path.t() | nil]
+  @spec log_paths :: [Path.t()]
   def log_paths do
     :logger
     |> :application.get_env(:backends, [])
@@ -41,6 +37,7 @@ defmodule Log.Reset do
       {LoggerFileBackend, id} -> :application.get_env(:logger, id, nil)[:path]
       _console? -> nil
     end)
+    |> Enum.reject(&is_nil/1)
   end
 
   ## Private functions
