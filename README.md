@@ -59,6 +59,6 @@ end
 alias Log.Reset
 
 def clear_all_log_files() do
-  Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
+  Reset.clear_logs()
 end
 ```

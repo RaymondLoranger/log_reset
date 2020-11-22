@@ -6,6 +6,14 @@ defmodule Log.Reset do
   require Logger
 
   @doc """
+  Creates and clears all log files.
+  """
+  @spec clear_logs :: :ok
+  def clear_logs do
+    log_paths() |> Enum.each(&clear_log/1)
+  end
+
+  @doc """
   Creates and clears a log file.
   """
   @spec clear_log(Path.t() | nil) :: :ok

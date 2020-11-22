@@ -7,7 +7,7 @@ defmodule Log.Reset.TopSup do
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do
-    if reset?(), do: Reset.log_paths() |> Enum.each(&Reset.clear_log/1)
+    if reset?(), do: Reset.clear_logs()
     Supervisor.start_link([], name: TopSup, strategy: :one_for_one)
   end
 
