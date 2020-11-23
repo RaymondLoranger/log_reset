@@ -23,7 +23,7 @@ The configurable clearing levels are:
 
 - :all (default)
 - :none
-- :debug | :info | :warn | :error (see [Logger](https://hexdocs.pm/logger/Logger.html) for other levels)
+- [:debug | :info | :warn | :error] (see [Logger](https://hexdocs.pm/logger/Logger.html) for other levels)
 
 Use file `config/runtime.exs` to configure the clearing levels, for example:
 
