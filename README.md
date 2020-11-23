@@ -16,7 +16,7 @@ end
 
 ## Usage
 
-As a dependency, this app will normally create and clear __all__ log files
+As a dependency, this app will (by default) create and clear __all__ log files
 configured in the parent app at startup.
 
 The log levels of the log files to be cleared can be:
@@ -35,7 +35,7 @@ config :log_reset, levels: [:debug, :info]
 
 After startup, log reset can be performed selectively or globally:
 
-## Example 1
+#### Example 1
 
 ```elixir
 alias Log.Reset
@@ -44,7 +44,7 @@ alias Log.Reset
 Reset.clear_logs([:error, :info])
 ```
 
-## Example 2
+#### Example 2
 
 ```elixir
 alias Log.Reset
