@@ -19,21 +19,18 @@ end
 As a dependency, this app will normally create and clear __all__ log files
 configured in the parent app at startup.
 
-The log levels of the log files to be cleared can be specified as follows:
+The log levels of the log files to be cleared can be:
 
-config :log_reset, levels: _levels_
-
-where _levels_ can be:
-  :all
-  |:none
-  | [[Logger.level](https://hexdocs.pm/logger/Logger.html#t:level/0)]
+- :all (default)
+- :none
+- [ [Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0) ]
 
 Use file `config/runtime.exs` to configure the above log levels, for example:
 
 ```elixir
 import Config
 
-config :log_reset, levels: config_env() in [:test] && [:debug, :info] || :all
+config :log_reset, levels: [:debug, :info]
 ```
 
 After startup, log reset can be performed selectively or globally:
