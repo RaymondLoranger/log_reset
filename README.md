@@ -30,7 +30,7 @@ Use file `config/runtime.exs` to configure the clearing levels, for example:
 ```elixir
 import Config
 
-config :log_reset, levels: config_env() in [:test] && :all || :none
+config :log_reset, levels: config_env() in [:test] && [:debug] || :all
 ```
 
 After startup, log reset can be performed selectively or globally:
