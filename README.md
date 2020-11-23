@@ -26,7 +26,7 @@ config :log_reset, levels: _levels_
 where _levels_ can be:
   :all
   |:none
-  | [Logger.level(https://hexdocs.pm/logger/Logger.html#t:level/0)]
+  | [[Logger.level](https://hexdocs.pm/logger/Logger.html#t:level/0)]
 
 Use file `config/runtime.exs` to configure the above log levels, for example:
 
