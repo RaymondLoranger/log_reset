@@ -16,26 +16,16 @@ end
 
 ## Usage
 
-As a dependency, this app will, by default, create and clear __all__ log files
+As a dependency, this app will normally create and clear __all__ log files
 configured in the parent app at startup.
 
-The parent app may provide different clearing options, for example:
+The configurable clearing levels are:
 
-```elixir
-config :log_reset, levels: :none
-```
+- :all (default)
+- :none
+- :debug | :info | :warn | :error (see [Logger](https://hexdocs.pm/logger/Logger.html) for other levels)
 
-```elixir
-config :log_reset, levels: [:error, :info]
-```
-
-The above config could depend on the mix environment by invoking the usual:
-
-```elixir
-import_config "#{Mix.env()}.exs"
-```
-
-You can also provide a `config/runtime.exs` file such as this one:
+Use file `config/runtime.exs` to configure the clearing levels, for example:
 
 ```elixir
 import Config
