@@ -10,7 +10,6 @@ defmodule Log.Reset.ConfigPathsServer do
 
   @type from :: GenServer.from()
   @type handle_call :: {:reply, reply :: term, state :: ConfigPaths.t()}
-  @type handle_cast :: {:noreply, state :: ConfigPaths.t()}
   @type handle_info :: {:noreply, state :: ConfigPaths.t()}
   @type init :: {:ok, state :: ConfigPaths.t()}
   @type message :: tuple
@@ -40,18 +39,17 @@ defmodule Log.Reset.ConfigPathsServer do
     {:reply, config_paths, config_paths}
   end
 
-  @spec handle_cast(request, ConfigPaths.t()) :: handle_cast
-  def handle_cast(:refresh, _config_paths) do
-    {:noreply, ConfigPaths.new()}
+  def handle_call(:refresh, _config_paths) do
+    {:noreply, ConfigPaths.new(), ConfigPaths.new()}
   end
 
-  def handle_cast({:clear_logs, levels}, config_paths) do
-    ConfigPaths.clear_logs(config_paths, levels)
-    {:noreply, config_paths}
+  def handle_call({:clear_logs, levels}, config_paths) do
+    {:noreply, ConfigPaths.clear_logs(config_paths, levels), config_paths}
   end
 
   @spec handle_info(message, ConfigPaths.t()) :: handle_info
   def handle_info({:clear_logs, levels}, config_paths) do
-    handle_cast({:clear_logs, levels}, config_paths)
+    ConfigPaths.clear_logs(config_paths, levels)
+    {:noreply, config_paths}
   end
 end

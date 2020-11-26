@@ -21,14 +21,14 @@ defmodule Log.Reset do
   @doc """
   Refreshes the map of configured log paths.
   """
-  @spec refresh :: :ok
-  def refresh, do: GenServer.cast(Server, :refresh)
+  @spec refresh :: ConfigPaths.t()
+  def refresh, do: GenServer.call(Server, :refresh)
 
   @doc """
   Clears the configured log files of given `levels`.
   """
-  @spec clear_logs(ConfigPaths.levels()) :: :ok
+  @spec clear_logs(ConfigPaths.levels()) :: [:ok] | :ok
   def clear_logs(levels) do
-    GenServer.cast(Server, {:clear_logs, levels})
+    GenServer.call(Server, {:clear_logs, levels})
   end
 end
