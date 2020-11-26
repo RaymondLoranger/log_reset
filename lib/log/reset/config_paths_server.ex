@@ -40,11 +40,11 @@ defmodule Log.Reset.ConfigPathsServer do
   end
 
   def handle_call(:refresh, _config_paths) do
-    {:noreply, ConfigPaths.new(), ConfigPaths.new()}
+    {:reply, ConfigPaths.new(), ConfigPaths.new()}
   end
 
   def handle_call({:clear_logs, levels}, config_paths) do
-    {:noreply, ConfigPaths.clear_logs(config_paths, levels), config_paths}
+    {:reply, ConfigPaths.clear_logs(config_paths, levels), config_paths}
   end
 
   @spec handle_info(message, ConfigPaths.t()) :: handle_info
