@@ -1,7 +1,7 @@
 import Config
 
 # Should be configured in the parent app...
-# config :log_reset, levels: [:error, :info]
+# config :log_reset, levels: :all
 
 # For testing purposes only...
 config :log_reset,

@@ -20,6 +20,7 @@ As a dependency, this app will (by default) create and clear __all__ log files
 configured in the parent app at startup.
 
 The log levels of the log files to be cleared can be:
+
 - :all (default)
 - :none
 - [ [Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0) ]

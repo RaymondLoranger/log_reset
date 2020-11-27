@@ -3,8 +3,8 @@ defmodule Log.Reset.TopSup do
   use PersistConfig
 
   alias __MODULE__
-  alias Log.Reset.ConfigPaths
-  alias Log.Reset.ConfigPathsServer, as: Server
+  alias Log.Reset.ConfigPaths.Server
+  alias Log.Reset
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do
@@ -17,6 +17,6 @@ defmodule Log.Reset.TopSup do
 
   ## Private functions
 
-  @spec levels :: ConfigPaths.levels()
+  @spec levels :: Reset.levels()
   defp levels, do: get_env(:levels, :all)
 end

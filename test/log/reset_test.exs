@@ -13,12 +13,12 @@ defmodule Log.ResetTest do
 
   describe "config_paths/0" do
     test "returns a map of configured log paths" do
-      assert Reset.config_paths() == %{
+      assert %{
                debug: "./log/debug.log",
                info: "./log/info.log",
                warn: "./log/warn.log",
                error: "./log/error.log"
-             }
+             } = Reset.config_paths()
     end
   end
 end

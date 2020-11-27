@@ -3,29 +3,30 @@ defmodule Log.Reset.ConfigPaths do
   Creates and clears configured log files.
   """
 
+  # Must be in that order given the common 'Log' part...
+  alias Log.Reset
   alias Log.Reset.Log
 
-  @type levels :: :all | :none | [Logger.level()]
   @type t :: %{Logger.level() => Path.t()}
 
   @doc """
   Creates and clears the configured log files of given `levels`.
   """
-  @spec clear_logs(t, levels) :: [:ok] | :ok
+  @spec clear_logs(t, Reset.levels()) :: :ok
   def clear_logs(config_paths, levels)
 
   def clear_logs(config_paths, :all) do
-    for {_level, path} <- config_paths do
+    Enum.reduce(config_paths, :ok, fn {_level, path}, _acc ->
       clear_log(path)
-    end
+    end)
   end
 
   def clear_logs(_config_paths, :none), do: :ok
 
   def clear_logs(config_paths, levels) when is_list(levels) do
-    for {level, path} <- config_paths, level in levels do
-      clear_log(path)
-    end
+    Enum.reduce(config_paths, :ok, fn {level, path}, acc ->
+      if level in levels, do: clear_log(path), else: acc
+    end)
   end
 
   def clear_logs(_config_paths, _unknown), do: :ok
