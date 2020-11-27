@@ -3,7 +3,7 @@ defmodule Log.Reset.ConfigPaths do
   Creates and clears configured log files.
   """
 
-  require Logger
+  alias Log.Reset.Log
 
   @type levels :: :all | :none | [Logger.level()]
   @type t :: %{Logger.level() => Path.t()}
@@ -59,8 +59,8 @@ defmodule Log.Reset.ConfigPaths do
     create_dir(dir_path)
 
     case File.write(log_path, "") do
-      :ok -> info("Cleared log file", log_path)
-      {:error, reason} -> error(reason, "Couldn't clear log file", log_path)
+      :ok -> Log.info(:cleared_log_file, {log_path})
+      {:error, reason} -> Log.error(:could_not_clear_log, {log_path, reason})
     end
   end
 
@@ -79,24 +79,7 @@ defmodule Log.Reset.ConfigPaths do
   defp create_dir(dir_path) do
     case File.mkdir_p(dir_path) do
       :ok -> :ok
-      {:error, reason} -> error(reason, "Couldn't create directory", dir_path)
+      {:error, reason} -> Log.error(:could_not_create_dir, {dir_path, reason})
     end
-  end
-
-  @spec info(String.t(), Path.t()) :: :ok
-  defp info(msg, path) do
-    Logger.info("""
-    \n#{msg}:
-    #{inspect(path)}
-    """)
-  end
-
-  @spec error(File.posix(), String.t(), Path.t()) :: :ok
-  defp error(reason, msg, path) do
-    Logger.error("""
-    \n#{msg}:
-    #{inspect(path)}
-    #{:file.format_error(reason)}
-    """)
   end
 end
