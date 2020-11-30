@@ -58,7 +58,5 @@ defmodule Log.Reset.ConfigPaths.Server do
     {:noreply, config_paths}
   end
 
-  def handle_info(_, config_paths) do
-    {:noreply, config_paths}
-  end
+  def handle_info(_message, config_paths), do: {:noreply, config_paths}
 end

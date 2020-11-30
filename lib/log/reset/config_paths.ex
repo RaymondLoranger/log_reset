@@ -60,8 +60,8 @@ defmodule Log.Reset.ConfigPaths do
     create_dir(dir_path)
 
     case File.write(log_path, "") do
-      :ok -> Log.info(:cleared_log_file, {log_path})
-      {:error, reason} -> Log.error(:could_not_clear_log, {log_path, reason})
+      :ok -> Log.info(:cleared, {log_path, __ENV__})
+      {:error, reason} -> Log.error(:not_cleared, {log_path, reason, __ENV__})
     end
   end
 
@@ -80,7 +80,7 @@ defmodule Log.Reset.ConfigPaths do
   defp create_dir(dir_path) do
     case File.mkdir_p(dir_path) do
       :ok -> :ok
-      {:error, reason} -> Log.error(:could_not_create_dir, {dir_path, reason})
+      {:error, reason} -> Log.error(:not_created, {dir_path, reason, __ENV__})
     end
   end
 end

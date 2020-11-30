@@ -1,9 +1,22 @@
 defmodule Log.Reset.Log do
   use File.Only.Logger
 
-  error :could_not_clear_log, {log_path, reason} do
+  info :cleared, {log_path, env} do
+    """
+    \nCleared log file...
+    • Inside function:
+      #{fun(env)}
+    • Path:
+      #{inspect(log_path)}
+    #{from()}
+    """
+  end
+
+  error :not_cleared, {log_path, reason, env} do
     """
     \nCould not clear log file...
+    • Inside function:
+      #{fun(env)}
     • Path:
       #{inspect(log_path)}
     • Reason:
@@ -12,22 +25,15 @@ defmodule Log.Reset.Log do
     """
   end
 
-  error :could_not_create_dir, {dir_path, reason} do
+  error :not_created, {dir_path, reason, env} do
     """
     \nCould not create directory...
+    • Inside function:
+      #{fun(env)}
     • Path:
       #{inspect(dir_path)}
     • Reason:
       #{reason |> :file.format_error() |> inspect()}
-    #{from()}
-    """
-  end
-
-  info :cleared_log_file, {log_path} do
-    """
-    \nCleared log file...
-    • Path:
-      #{inspect(log_path)}
     #{from()}
     """
   end
