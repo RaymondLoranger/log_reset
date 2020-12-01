@@ -10,11 +10,11 @@ defmodule Log.Reset.ConfigPaths do
   @type t :: %{Logger.level() => Path.t()}
 
   @doc """
+  Deletes the configured log files for the given `levels`.
   Creates and clears the configured log files of given `levels`.
+  We actually delete each file (faster) instead of clearing it.
   """
   @spec clear_logs(t, Reset.levels()) :: :ok
-  def clear_logs(config_paths, levels)
-
   def clear_logs(config_paths, :all) do
     Enum.reduce(config_paths, :ok, fn {_level, path}, _acc ->
       clear_log(path)
@@ -59,8 +59,10 @@ defmodule Log.Reset.ConfigPaths do
     dir_path = Path.dirname(log_path)
     create_dir(dir_path)
 
-    case File.write(log_path, "") do
+    # Should be faster than: `File.write(log_path, "")`...
+    case File.rm(log_path) do
       :ok -> Log.info(:cleared, {log_path, __ENV__})
+      {:error, :enoent} -> Log.info(:cleared, {log_path, __ENV__})
       {:error, reason} -> Log.error(:not_cleared, {log_path, reason, __ENV__})
     end
   end
