@@ -29,8 +29,10 @@ defmodule Log.Reset.ConfigPaths.Server do
 
   @spec init(Reset.levels()) :: init
   def init(levels) do
-    self() |> send({:clear_logs, levels})
-    {:ok, ConfigPaths.new()}
+    # self() |> send({:clear_logs, levels})
+    config_paths = ConfigPaths.new()
+    :ok = ConfigPaths.clear_logs(config_paths, levels)
+    {:ok, config_paths}
   end
 
   @spec handle_call(request, from, ConfigPaths.t()) :: handle_call
