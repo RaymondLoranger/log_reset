@@ -21,7 +21,7 @@ defmodule Log.Reset.MixProject do
 
   defp description do
     """
-    Creates and clears configured log files.
+    Resets configured log files.
     """
   end
 
