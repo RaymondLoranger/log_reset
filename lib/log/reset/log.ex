@@ -3,7 +3,7 @@ defmodule Log.Reset.Log do
 
   info :log_reset, {log_path} do
     """
-    \nLog file successfully reset...
+    \nLog file reset successfully...
     • Path:
       #{inspect(log_path)}
     #{from()}
