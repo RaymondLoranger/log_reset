@@ -1,6 +1,6 @@
 defmodule Log.Reset.ConfigPaths do
   @moduledoc """
-  Creates and clears configured log files.
+  Resets configured log files.
   """
 
   # Must be in that order given the common 'Log' part...
@@ -10,36 +10,29 @@ defmodule Log.Reset.ConfigPaths do
   @type t :: %{Logger.level() => Path.t()}
 
   @doc """
-  Deletes the configured log files for the given `levels`.
-  Creates and clears the configured log files of given `levels`.
-  We actually delete each file (faster) instead of clearing it.
+  Resets the configured log files of the given `levels`.
   """
-  @spec clear_logs(t, Reset.levels()) :: :ok
-  def clear_logs(config_paths, :all) do
-    Enum.reduce(config_paths, :ok, fn {_level, path}, _acc ->
-      clear_log(path)
-    end)
+  @spec reset_logs(t, Reset.levels()) :: :ok
+  def reset_logs(config_paths, :all) do
+    config_paths |> log_paths() |> reset_logs()
   end
 
-  def clear_logs(_config_paths, :none), do: :ok
+  def reset_logs(_config_paths, :none), do: :ok
 
-  def clear_logs(config_paths, levels) when is_list(levels) do
-    Enum.reduce(config_paths, :ok, fn {level, path}, acc ->
-      if level in levels, do: clear_log(path), else: acc
-    end)
+  def reset_logs(config_paths, levels) when is_list(levels) do
+    for {level, log_path} <- config_paths, level in levels do
+      log_path
+    end
+    |> reset_logs()
   end
 
-  def clear_logs(_config_paths, _unknown), do: :ok
+  def reset_logs(_config_paths, _), do: :ok
 
   @doc """
   Returns a list of configured log paths.
   """
   @spec log_paths(t) :: [Path.t()]
-  def log_paths(config_paths) do
-    for {_level, path} <- config_paths do
-      path
-    end
-  end
+  def log_paths(config_paths), do: Map.values(config_paths)
 
   @doc """
   Returns a map of configured log paths.
@@ -53,17 +46,35 @@ defmodule Log.Reset.ConfigPaths do
 
   ## Private functions
 
-  @spec clear_log(Path.t()) :: :ok
-  defp clear_log(log_path) do
-    log_path = Path.expand(log_path)
-    dir_path = Path.dirname(log_path)
-    create_dir(dir_path)
+  @spec reset_logs([Path.t()]) :: :ok
+  defp reset_logs(log_paths) do
+    log_paths
+    # Delete log files first...
+    |> Enum.map(&Task.async(fn -> reset_log(&1) end))
+    |> Enum.map(&Task.await/1)
+    # Log results afterwards...
+    |> log_results()
+  end
 
-    # Should be faster than: `File.write(log_path, "")`...
+  @spec log_results([tuple]) :: :ok
+  defp log_results(results) do
+    Enum.reduce(results, :ok, fn
+      {:ok, log_path}, _acc ->
+        :ok = Log.info(:log_reset, {log_path})
+
+      {:error, reason, log_path}, _acc ->
+        :ok = Log.error(:log_not_reset, {log_path, reason})
+    end)
+  end
+
+  @spec reset_log(Path.t()) :: tuple
+  defp reset_log(log_path) do
+    log_path = Path.expand(log_path)
+
     case File.rm(log_path) do
-      :ok -> Log.info(:cleared, {log_path, __ENV__})
-      {:error, :enoent} -> Log.info(:cleared, {log_path, __ENV__})
-      {:error, reason} -> Log.error(:not_cleared, {log_path, reason, __ENV__})
+      :ok -> {:ok, log_path}
+      {:error, :enoent} -> {:ok, log_path}
+      {:error, reason} -> {:error, reason, log_path}
     end
   end
 
@@ -76,13 +87,5 @@ defmodule Log.Reset.ConfigPaths do
       _console? -> nil
     end)
     |> Enum.reject(&is_nil/1)
-  end
-
-  @spec create_dir(Path.t()) :: :ok
-  defp create_dir(dir_path) do
-    case File.mkdir_p(dir_path) do
-      :ok -> :ok
-      {:error, reason} -> Log.error(:not_created, {dir_path, reason, __ENV__})
-    end
   end
 end

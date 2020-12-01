@@ -11,9 +11,7 @@ defmodule Log.Reset.ConfigPaths.Server do
 
   @type from :: GenServer.from()
   @type handle_call :: {:reply, reply :: term, state :: ConfigPaths.t()}
-  @type handle_info :: {:noreply, state :: ConfigPaths.t()}
   @type init :: {:ok, state :: ConfigPaths.t()}
-  @type message :: tuple
   @type on_start :: GenServer.on_start()
   @type request :: atom | tuple
 
@@ -29,9 +27,8 @@ defmodule Log.Reset.ConfigPaths.Server do
 
   @spec init(Reset.levels()) :: init
   def init(levels) do
-    # self() |> send({:clear_logs, levels})
     config_paths = ConfigPaths.new()
-    :ok = ConfigPaths.clear_logs(config_paths, levels)
+    :ok = ConfigPaths.reset_logs(config_paths, levels)
     {:ok, config_paths}
   end
 
@@ -49,16 +46,8 @@ defmodule Log.Reset.ConfigPaths.Server do
     {:reply, config_paths, config_paths}
   end
 
-  def handle_call({:clear_logs, levels}, config_paths) do
-    :ok = ConfigPaths.clear_logs(config_paths, levels)
+  def handle_call({:reset_logs, levels}, config_paths) do
+    :ok = ConfigPaths.reset_logs(config_paths, levels)
     {:reply, :ok, config_paths}
   end
-
-  @spec handle_info(message, ConfigPaths.t()) :: handle_info
-  def handle_info({:clear_logs, levels}, config_paths) do
-    :ok = ConfigPaths.clear_logs(config_paths, levels)
-    {:noreply, config_paths}
-  end
-
-  def handle_info(_message, config_paths), do: {:noreply, config_paths}
 end

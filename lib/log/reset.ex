@@ -1,6 +1,6 @@
 defmodule Log.Reset do
   @moduledoc """
-  Creates and clears configured log files.
+  Resets configured log files.
   """
 
   alias __MODULE__.ConfigPaths.Server
@@ -27,10 +27,10 @@ defmodule Log.Reset do
   def refresh, do: GenServer.call(Server, :refresh)
 
   @doc """
-  Clears the configured log files of given `levels`.
+  Resets the configured log files of the given `levels`.
   """
-  @spec clear_logs(levels) :: :ok
-  def clear_logs(levels) do
-    GenServer.call(Server, {:clear_logs, levels})
+  @spec reset_logs(levels) :: :ok
+  def reset_logs(levels) do
+    GenServer.call(Server, {:reset_logs, levels})
   end
 end

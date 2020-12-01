@@ -1,37 +1,20 @@
 defmodule Log.Reset.Log do
   use File.Only.Logger
 
-  info :cleared, {log_path, env} do
+  info :log_reset, {log_path} do
     """
-    \nCleared log file...
-    • Inside function:
-      #{fun(env)}
+    \nLog file successfully reset...
     • Path:
       #{inspect(log_path)}
     #{from()}
     """
   end
 
-  error :not_cleared, {log_path, reason, env} do
+  error :log_not_reset, {log_path, reason} do
     """
-    \nCould not clear log file...
-    • Inside function:
-      #{fun(env)}
+    \nCould not reset log file...
     • Path:
       #{inspect(log_path)}
-    • Reason:
-      #{reason |> :file.format_error() |> inspect()}
-    #{from()}
-    """
-  end
-
-  error :not_created, {dir_path, reason, env} do
-    """
-    \nCould not create directory...
-    • Inside function:
-      #{fun(env)}
-    • Path:
-      #{inspect(dir_path)}
     • Reason:
       #{reason |> :file.format_error() |> inspect()}
     #{from()}

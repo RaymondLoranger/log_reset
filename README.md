@@ -1,6 +1,6 @@
 # Log Reset
 
-Creates and clears configured log files.
+Resets configured log files.
 
 ## Installation
 
@@ -16,16 +16,16 @@ end
 
 ## Usage
 
-As a dependency, this app will (by default) create and clear __all__ log files
+As a dependency, this app will (by default) reset __all__ log files
 configured in the parent app at startup.
 
-The log levels of the log files to be cleared can be:
+The log levels of the log files to be reset can be:
 
 - :all (default)
 - :none
 - [ [Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0) ]
 
-Use file `config/runtime.exs` to configure the above log levels, for example:
+You may use file `config/runtime.exs` to configure the above log levels:
 
 ```elixir
 import Config
@@ -40,8 +40,8 @@ After startup, log reset can be performed selectively or globally:
 ```elixir
 alias Log.Reset
 
-# Clears configured log files of levels :error and :info.
-Reset.clear_logs([:error, :info])
+# Resets configured log files of levels :error and :info.
+Reset.reset_logs([:error, :info])
 ```
 
 #### Example 2
@@ -49,6 +49,6 @@ Reset.clear_logs([:error, :info])
 ```elixir
 alias Log.Reset
 
-# Clears all configured log files.
-Reset.clear_logs(:all)
+# Resets all configured log files.
+Reset.reset_logs(:all)
 ```
