@@ -41,12 +41,12 @@ defmodule Log.Reset.ConfigPaths.Server do
     {:reply, config_paths, config_paths}
   end
 
-  def handle_call(:refresh, _config_paths) do
+  def handle_call(:refresh, _from, _config_paths) do
     config_paths = ConfigPaths.new()
     {:reply, config_paths, config_paths}
   end
 
-  def handle_call({:reset_logs, levels}, config_paths) do
+  def handle_call({:reset_logs, levels}, _from, config_paths) do
     :ok = ConfigPaths.reset_logs(config_paths, levels)
     {:reply, :ok, config_paths}
   end
