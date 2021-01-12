@@ -14,7 +14,7 @@ defmodule Log.Reset.ConfigPaths do
   """
   @spec reset_logs(t, Reset.levels()) :: :ok
   def reset_logs(config_paths, :all) do
-    config_paths |> log_paths() |> reset_logs()
+    log_paths(config_paths) |> reset_logs()
   end
 
   def reset_logs(_config_paths, :none), do: :ok

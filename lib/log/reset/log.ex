@@ -16,7 +16,7 @@ defmodule Log.Reset.Log do
     • Path:
       #{inspect(log_path)}
     • Reason:
-      #{reason |> :file.format_error() |> inspect()}
+      #{:file.format_error(reason) |> inspect()}
     #{from()}
     """
   end

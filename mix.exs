@@ -4,7 +4,7 @@ defmodule Log.Reset.MixProject do
   def project do
     [
       app: :log_reset,
-      version: "0.1.33",
+      version: "0.1.34",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Log Reset",
@@ -48,7 +48,6 @@ defmodule Log.Reset.MixProject do
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:file_only_logger, "~> 0.1"},
-      {:logger_file_backend, "~> 0.0.9"},
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
       {:persist_config, "~> 0.4", runtime: false}
