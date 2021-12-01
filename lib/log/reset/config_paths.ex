@@ -60,10 +60,10 @@ defmodule Log.Reset.ConfigPaths do
   defp log_results(results) do
     Enum.reduce(results, :ok, fn
       {:ok, log_path}, _acc ->
-        :ok = Log.info(:log_reset, {log_path})
+        :ok = Log.info(:log_reset, {log_path, __ENV__})
 
       {:error, reason, log_path}, _acc ->
-        :ok = Log.error(:log_not_reset, {log_path, reason})
+        :ok = Log.error(:log_not_reset, {log_path, reason, __ENV__})
     end)
   end
 
@@ -80,8 +80,7 @@ defmodule Log.Reset.ConfigPaths do
 
   @spec log_configs :: [Keyword.t()]
   defp log_configs do
-    :logger
-    |> :application.get_env(:backends, [])
+    :application.get_env(:logger, :backends, [])
     |> Enum.map(fn
       {LoggerFileBackend, id} -> :application.get_env(:logger, id, nil)
       _console? -> nil
