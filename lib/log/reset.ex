@@ -44,7 +44,7 @@ defmodule Log.Reset do
       :ok
   """
   @spec reset_logs(levels) :: :ok
-  def reset_logs(levels) when is_list(levels) do
+  def reset_logs(levels) do
     GenServer.call(Server, {:reset_logs, levels})
   end
 end

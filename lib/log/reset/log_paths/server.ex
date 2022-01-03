@@ -8,23 +8,20 @@ defmodule Log.Reset.LogPaths.Server do
 
   alias __MODULE__
   alias Log.Reset.LogPaths
-  alias Log.Reset
 
   @doc """
   Spawns a "log paths" server process registered under the module name.
   """
-  @spec start_link(Reset.levels()) :: GenServer.on_start()
-  def start_link(levels) do
-    GenServer.start_link(Server, levels, name: Server)
+  @spec start_link(term) :: GenServer.on_start()
+  def start_link(:ok = _init_arg) do
+    GenServer.start_link(Server, :ok, name: Server)
   end
 
   ## Callbacks
 
-  @spec init(Reset.levels()) :: {:ok, state :: LogPaths.t()}
-  def init(levels) do
-    log_paths = LogPaths.new()
-    :ok = LogPaths.reset_logs(log_paths, levels)
-    {:ok, log_paths}
+  @spec init(term) :: {:ok, state :: LogPaths.t()}
+  def init(:ok = _init_arg) do
+    {:ok, LogPaths.new()}
   end
 
   @spec handle_call(atom | tuple, GenServer.from(), LogPaths.t()) ::
