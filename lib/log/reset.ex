@@ -6,7 +6,7 @@ defmodule Log.Reset do
   alias __MODULE__.LogPaths.Server
   alias __MODULE__.LogPaths
 
-  @typedoc "Log level"
+  @typedoc "Log levels"
   @type levels :: [Logger.level()] | :all | :none
 
   @doc """
