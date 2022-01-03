@@ -14,20 +14,20 @@ defmodule Log.Reset.LogPaths do
   Resets the configured log files of the given `levels`.
   """
   @spec reset_logs(t, Reset.levels()) :: :ok
-  def reset_logs(config_paths, :all) do
-    config_paths |> Map.values() |> reset_logs()
+  def reset_logs(log_paths, :all) do
+    log_paths |> Map.values() |> reset_logs()
   end
 
-  def reset_logs(_config_paths, :none), do: :ok
+  def reset_logs(_log_paths, :none), do: :ok
 
-  def reset_logs(config_paths, levels) when is_list(levels) do
-    for {level, log_path} <- config_paths, level in levels do
+  def reset_logs(log_paths, levels) when is_list(levels) do
+    for {level, log_path} <- log_paths, level in levels do
       log_path
     end
     |> reset_logs()
   end
 
-  def reset_logs(_config_paths, _), do: :ok
+  def reset_logs(_log_paths, _), do: :ok
 
   @doc """
   Creates a map assigning each configured log path to its log level.
