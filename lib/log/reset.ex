@@ -10,10 +10,10 @@ defmodule Log.Reset do
   @type levels :: [Logger.level()] | :all | :none
 
   @doc """
-  Returns the "log paths" server state.
-  
+  Returns a map assigning configured log paths to their log levels.
+
   ## Examples
-  
+
       iex> alias Log.Reset
       iex> Reset.log_paths() |> is_map()
       true
@@ -22,10 +22,10 @@ defmodule Log.Reset do
   def log_paths, do: GenServer.call(Server, :log_paths)
 
   @doc """
-  Refreshes and returns the "log paths" server state.
-  
+  Refreshes the map assigning configured log paths to their log levels.
+
   ## Examples
-  
+
       iex> alias Log.Reset
       iex> Reset.refresh() |> is_map()
       true
@@ -35,9 +35,9 @@ defmodule Log.Reset do
 
   @doc """
   Resets the configured log files of the given `levels`.
-  
+
   ## Examples
-  
+
       iex> alias Log.Reset
       iex> # Reset ignored if level not configured...
       iex> Reset.reset_logs([:alert, :critical, :warn])
