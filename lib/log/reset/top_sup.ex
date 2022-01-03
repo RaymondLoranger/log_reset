@@ -11,13 +11,16 @@ defmodule Log.Reset.TopSup do
   def start(_start_type, :ok = _start_args) do
     [
       # Child spec relying on `use GenServer`...
-      {Server, levels()}
+      {Server, :ok}
     ]
     |> Supervisor.start_link(name: TopSup, strategy: :one_for_one)
+    |> tap(&startup_reset/1)
   end
 
   ## Private functions
 
-  @spec levels :: Reset.levels()
-  defp levels, do: get_env(:levels, :all)
+  @spec startup_reset(tuple) :: :ok
+  defp startup_reset({:ok, _pid}) do
+    get_env(:levels, :all) |> Reset.reset_logs()
+  end
 end
