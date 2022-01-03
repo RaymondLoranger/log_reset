@@ -3,7 +3,7 @@ defmodule Log.Reset.TopSup do
   use PersistConfig
 
   alias __MODULE__
-  alias Log.Reset.ConfigPaths.Server
+  alias Log.Reset.LogPaths.Server
   alias Log.Reset
 
   # @impl Application
