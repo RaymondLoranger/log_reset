@@ -10,26 +10,37 @@ defmodule Log.Reset do
   @type levels :: [Logger.level()] | :all | :none
 
   @doc """
-  Returns a map assigning configured log paths to their log levels.
+  Returns a map of configured log paths.
 
   ## Examples
 
       iex> alias Log.Reset
-      iex> Reset.log_paths() |> is_map()
-      true
+      iex> Reset.log_paths()
+      %{
+        debug: "./log/debug.log",
+        error: "./log/error.log",
+        info: "./log/info.log",
+        warn: "./log/warn.log"
+      }
   """
   @spec log_paths :: LogPaths.t()
   def log_paths, do: GenServer.call(Server, :log_paths)
 
   @doc """
-  Refreshes the map assigning configured log paths to their log levels
-  from the application environment.
+  Refreshes the map of configured log paths from the application environment.
 
-  ## Examples
+  # ## Examples
 
-      iex> alias Log.Reset
-      iex> Reset.refresh_log_paths() |> is_map()
-      true
+  #     iex> alias Log.Reset
+  #     iex> old_backends = Application.get_env(:logger, :backends)
+  #     iex> new_backends = [:console, {LoggerFileBackend, :warn_log}]
+  #     iex> Application.put_env(:logger, :backends, new_backends)
+  #     iex> Process.sleep(99)
+  #     iex> new_log_paths = Reset.refresh_log_paths()
+  #     iex> Application.put_env(:logger, :backends, old_backends)
+  #     iex> Process.sleep(99)
+  #     iex> new_log_paths
+  #     %{warn: "./log/warn.log"}
   """
   @spec refresh_log_paths :: LogPaths.t()
   def refresh_log_paths, do: GenServer.call(Server, :refresh)
@@ -40,8 +51,8 @@ defmodule Log.Reset do
   ## Examples
 
       iex> alias Log.Reset
-      iex> # Reset ignored if level not configured...
-      iex> Reset.reset_logs([:alert, :critical, :warn])
+      iex> # Reset for :alert ignored as not configured...
+      iex> Reset.reset_logs([:alert, :warn])
       :ok
   """
   @spec reset_logs(levels) :: :ok

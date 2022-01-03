@@ -1,7 +1,6 @@
 defmodule Log.Reset.LogPaths.Server do
   @moduledoc """
-  A server process that holds, as its state, a map assigning configured log
-  paths to their log levels.
+  A server process that holds a map of configured log paths as its state.
   """
 
   use GenServer

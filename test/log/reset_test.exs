@@ -7,8 +7,13 @@ defmodule Log.ResetTest do
 
   describe "log_paths/0" do
     test "returns a map" do
-      # May be empty map...
-      assert Reset.log_paths() |> is_map()
+      assert Reset.log_paths() ==
+               %{
+                 debug: "./log/debug.log",
+                 error: "./log/error.log",
+                 info: "./log/info.log",
+                 warn: "./log/warn.log"
+               }
     end
   end
 end

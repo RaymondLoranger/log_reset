@@ -1,6 +1,6 @@
 defmodule Log.Reset.LogPaths do
   @moduledoc """
-  A map assigning configured log paths to their log levels, and functions.
+  A map of configured log paths and functions.
   """
 
   # Must be in that order given the common 'Log' part...
