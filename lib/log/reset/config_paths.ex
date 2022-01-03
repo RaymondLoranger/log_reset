@@ -1,12 +1,14 @@
 defmodule Log.Reset.ConfigPaths do
   @moduledoc """
-  Resets configured log files.
+  A map assigning configured log paths to their log levels, and functions.
+  A map assigning backend log paths to their log levels, and functions.
   """
 
   # Must be in that order given the common 'Log' part...
   alias Log.Reset
   alias Log.Reset.Log
 
+  @typedoc "A map assigning configured log paths to their log levels"
   @type t :: %{Logger.level() => Path.t()}
 
   @doc """
@@ -35,7 +37,7 @@ defmodule Log.Reset.ConfigPaths do
   def log_paths(config_paths), do: Map.values(config_paths)
 
   @doc """
-  Returns a map of configured log paths.
+  Returns a map assigning each configured log path to its log level.
   """
   @spec new :: t
   def new do
@@ -52,7 +54,7 @@ defmodule Log.Reset.ConfigPaths do
     # Delete log files first...
     |> Enum.map(&Task.async(fn -> reset_log(&1) end))
     |> Enum.map(&Task.await/1)
-    # Log results afterwards...
+    # Process results second...
     |> log_results()
   end
 
@@ -83,7 +85,7 @@ defmodule Log.Reset.ConfigPaths do
     :application.get_env(:logger, :backends, [])
     |> Enum.map(fn
       {LoggerFileBackend, id} -> :application.get_env(:logger, id, nil)
-      _console? -> nil
+      _console -> nil
     end)
     |> Enum.reject(&is_nil/1)
   end

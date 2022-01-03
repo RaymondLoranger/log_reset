@@ -6,7 +6,8 @@ defmodule Log.Reset do
   alias __MODULE__.ConfigPaths.Server
   alias __MODULE__.ConfigPaths
 
-  @type levels :: :all | :none | [Logger.level()]
+  @typedoc "Log level"
+  @type levels :: [Logger.level()] | :all | :none
 
   @doc """
   Returns a list of configured log paths.
@@ -15,13 +16,13 @@ defmodule Log.Reset do
   def log_paths, do: GenServer.call(Server, :log_paths)
 
   @doc """
-  Returns a map of configured log paths.
+  Returns a map assigning configured log paths to their log levels.
   """
   @spec config_paths :: ConfigPaths.t()
   def config_paths, do: GenServer.call(Server, :config_paths)
 
   @doc """
-  Refreshes the map of configured log paths.
+  Refreshes the map assigning configured log paths to their log levels.
   """
   @spec refresh :: ConfigPaths.t()
   def refresh, do: GenServer.call(Server, :refresh)
