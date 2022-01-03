@@ -22,16 +22,17 @@ defmodule Log.Reset do
   def log_paths, do: GenServer.call(Server, :log_paths)
 
   @doc """
-  Refreshes the map assigning configured log paths to their log levels.
+  Refreshes the map assigning configured log paths to their log levels
+  from the application environment.
 
   ## Examples
 
       iex> alias Log.Reset
-      iex> Reset.refresh() |> is_map()
+      iex> Reset.refresh_log_paths() |> is_map()
       true
   """
-  @spec refresh :: LogPaths.t()
-  def refresh, do: GenServer.call(Server, :refresh)
+  @spec refresh_log_paths :: LogPaths.t()
+  def refresh_log_paths, do: GenServer.call(Server, :refresh)
 
   @doc """
   Resets the configured log files of the given `levels`.
