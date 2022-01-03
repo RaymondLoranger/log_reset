@@ -28,19 +28,6 @@ defmodule Log.Reset do
 
   @doc """
   Refreshes the map of configured log paths from the application environment.
-
-  # ## Examples
-
-  #     iex> alias Log.Reset
-  #     iex> old_backends = Application.get_env(:logger, :backends)
-  #     iex> new_backends = [:console, {LoggerFileBackend, :warn_log}]
-  #     iex> Application.put_env(:logger, :backends, new_backends)
-  #     iex> Process.sleep(99)
-  #     iex> new_log_paths = Reset.refresh_log_paths()
-  #     iex> Application.put_env(:logger, :backends, old_backends)
-  #     iex> Process.sleep(99)
-  #     iex> new_log_paths
-  #     %{warn: "./log/warn.log"}
   """
   @spec refresh_log_paths :: LogPaths.t()
   def refresh_log_paths, do: GenServer.call(Server, :refresh)
@@ -51,8 +38,8 @@ defmodule Log.Reset do
   ## Examples
 
       iex> alias Log.Reset
-      iex> # Reset for :alert ignored as not configured...
-      iex> Reset.reset_logs([:alert, :warn])
+      iex> # No logs reset as log paths not configured...
+      iex> Reset.reset_logs([:alert, :notice])
       :ok
   """
   @spec reset_logs(levels) :: :ok
