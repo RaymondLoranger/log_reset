@@ -11,9 +11,9 @@ defmodule Log.Reset do
 
   @doc """
   Returns the "log paths" server state.
-
+  
   ## Examples
-
+  
       iex> alias Log.Reset
       iex> Reset.log_paths() |> is_map()
       true
@@ -23,9 +23,9 @@ defmodule Log.Reset do
 
   @doc """
   Refreshes and returns the "log paths" server state.
-
+  
   ## Examples
-
+  
       iex> alias Log.Reset
       iex> Reset.refresh() |> is_map()
       true
@@ -35,9 +35,9 @@ defmodule Log.Reset do
 
   @doc """
   Resets the configured log files of the given `levels`.
-
+  
   ## Examples
-
+  
       iex> alias Log.Reset
       iex> # Reset ignored if level not configured...
       iex> Reset.reset_logs([:alert, :critical, :warn])
