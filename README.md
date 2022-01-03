@@ -23,7 +23,7 @@ The log levels of the log files to be reset can be:
 
 - :all (default)
 - :none
-- [ [Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0) ]
+- [[Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0)]
 
 You may use file `config/runtime.exs` to configure the above log levels:
 
