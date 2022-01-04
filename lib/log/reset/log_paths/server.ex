@@ -8,6 +8,9 @@ defmodule Log.Reset.LogPaths.Server do
   alias __MODULE__
   alias Log.Reset.LogPaths
 
+  @typedoc "Server state"
+  @type state :: LogPaths.t()
+
   @doc """
   Spawns a "log paths" server process registered under the module name.
   """
@@ -18,13 +21,13 @@ defmodule Log.Reset.LogPaths.Server do
 
   ## Callbacks
 
-  @spec init(term) :: {:ok, state :: LogPaths.t()}
+  @spec init(term) :: {:ok, state}
   def init(:ok = _init_arg) do
     {:ok, LogPaths.new()}
   end
 
-  @spec handle_call(atom | tuple, GenServer.from(), LogPaths.t()) ::
-          {:reply, reply :: term, state :: LogPaths.t()}
+  @spec handle_call(atom | tuple, GenServer.from(), state) ::
+          {:reply, reply :: term, state}
   def handle_call(:log_paths, _from, log_paths) do
     {:reply, log_paths, log_paths}
   end
