@@ -3,9 +3,13 @@ defmodule Log.Reset.LogPaths do
   A map of configured log paths and functions.
   """
 
+  use PersistConfig
+
   # Must be in that order given the common 'Log' part...
   alias Log.Reset
   alias Log.Reset.Log
+
+  @levels get_env(:levels)
 
   @typedoc "A map assigning configured log paths to their log levels"
   @type t :: %{Logger.level() => Path.t()}
@@ -14,14 +18,15 @@ defmodule Log.Reset.LogPaths do
   Resets the configured log files of the given `levels`.
   """
   @spec reset_logs(t, Reset.levels()) :: :ok
-  def reset_logs(log_paths, :all) do
+  def reset_logs(log_paths, :all) when is_map(log_paths) do
     log_paths |> Map.values() |> reset_logs()
   end
 
   def reset_logs(_log_paths, :none), do: :ok
 
-  def reset_logs(log_paths, levels) when is_list(levels) do
-    for {level, log_path} <- log_paths, level in levels do
+  def reset_logs(log_paths, levels)
+      when is_map(log_paths) and is_list(levels) do
+    for {level, log_path} <- log_paths, level in levels and level in @levels do
       log_path
     end
     |> reset_logs()

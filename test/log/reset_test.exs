@@ -5,7 +5,7 @@ defmodule Log.ResetTest do
 
   doctest Reset
 
-  describe "log_paths/0" do
+  describe "Reset.log_paths/0" do
     test "returns a map" do
       assert Reset.log_paths() ==
                %{
