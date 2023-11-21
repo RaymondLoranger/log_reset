@@ -16,11 +16,12 @@ defmodule Log.Reset do
 
       iex> alias Log.Reset
       iex> Reset.log_paths()
+      # Listed alphabetically...
       %{
-        debug: "./log/debug.log",
-        error: "./log/error.log",
-        info: "./log/info.log",
-        warn: "./log/warn.log"
+        debug: ~c"./log/debug.log",
+        error: ~c"./log/error.log",
+        info: ~c"./log/info.log",
+        warning: ~c"./log/warning.log"
       }
   """
   @spec log_paths :: LogPaths.t()

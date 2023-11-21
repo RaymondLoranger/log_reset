@@ -4,7 +4,7 @@ defmodule Log.Reset.MixProject do
   def project do
     [
       app: :log_reset,
-      version: "0.1.53",
+      version: "0.1.54",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Log Reset",
@@ -27,7 +27,7 @@ defmodule Log.Reset.MixProject do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "config/persist*.exs"],
+      files: ["lib", "mix.exs", "README*"],
       maintainers: ["Raymond Loranger"],
       licenses: ["MIT"],
       links: %{"GitHub" => source_url()}

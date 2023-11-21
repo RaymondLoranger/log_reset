@@ -3,13 +3,9 @@ defmodule Log.Reset.LogPaths do
   A map of configured log paths and functions.
   """
 
-  use PersistConfig
-
   # Must be in that order given the common 'Log' part...
   alias Log.Reset
   alias Log.Reset.Log
-
-  @levels get_env(:levels)
 
   @typedoc "A map assigning configured log paths to their log levels"
   @type t :: %{Logger.level() => Path.t()}
@@ -26,7 +22,7 @@ defmodule Log.Reset.LogPaths do
 
   def reset_logs(log_paths, levels)
       when is_map(log_paths) and is_list(levels) do
-    for {level, log_path} <- log_paths, level in levels and level in @levels do
+    for {level, log_path} <- log_paths, level in levels do
       log_path
     end
     |> reset_logs()
@@ -39,9 +35,11 @@ defmodule Log.Reset.LogPaths do
   """
   @spec new :: t
   def new do
-    for config <- log_configs(), into: %{} do
-      {config[:level], config[:path]}
-    end
+    for {:handler, _handler_id, :logger_std_h,
+         %{level: level, config: %{file: path}}} <-
+          Application.get_env(:file_only_logger, :logger),
+        into: %{},
+        do: {level, path}
   end
 
   ## Private functions
@@ -49,10 +47,10 @@ defmodule Log.Reset.LogPaths do
   @spec reset_logs([Path.t()]) :: :ok
   defp reset_logs(log_paths) do
     log_paths
-    # Delete log files first...
+    # Truncate log files first...
     |> Enum.map(&Task.async(fn -> reset_log(&1) end))
     |> Enum.map(&Task.await/1)
-    # Process results second...
+    # Log reset results second...
     |> log_results()
   end
 
@@ -71,20 +69,11 @@ defmodule Log.Reset.LogPaths do
   defp reset_log(log_path) do
     log_path = Path.expand(log_path)
 
-    case File.rm(log_path) do
-      :ok -> {:ok, log_path}
+    # `File.rm/1` would prevent logging results when file_check > 0.
+    case File.open(log_path, [:write]) do
+      {:ok, _pid} -> {:ok, log_path}
       {:error, :enoent} -> {:ok, log_path}
       {:error, reason} -> {:error, reason, log_path}
     end
-  end
-
-  @spec log_configs :: [Keyword.t()]
-  defp log_configs do
-    :application.get_env(:logger, :backends, [])
-    |> Enum.map(fn
-      {LoggerFileBackend, id} -> :application.get_env(:logger, id, nil)
-      _console -> nil
-    end)
-    |> Enum.reject(&is_nil/1)
   end
 end
