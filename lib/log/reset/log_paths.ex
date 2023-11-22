@@ -12,6 +12,17 @@ defmodule Log.Reset.LogPaths do
 
   @doc """
   Resets the configured log files of the given `levels`.
+
+  ## Examples
+
+      iex> alias Log.Reset.LogPaths
+      # The parent app may not configure any file handlers...
+      iex> LogPaths.reset_logs([], :all)
+      :ok
+
+      iex> alias Log.Reset.LogPaths
+      iex> LogPaths.reset_logs([], [:info, :error])
+      :ok
   """
   @spec reset_logs(t, Reset.levels()) :: :ok
   def reset_logs(log_paths, :all) when is_map(log_paths) do
@@ -37,7 +48,7 @@ defmodule Log.Reset.LogPaths do
   def new do
     for {:handler, _handler_id, :logger_std_h,
          %{level: level, config: %{file: path}}} <-
-          Application.get_env(:file_only_logger, :logger),
+          Application.get_env(:file_only_logger, :logger, []),
         into: %{},
         do: {level, path}
   end
