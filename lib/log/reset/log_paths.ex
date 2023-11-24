@@ -3,6 +3,8 @@ defmodule Log.Reset.LogPaths do
   A map of configured log paths and functions.
   """
 
+  use PersistConfig
+
   # Must be in that order given the common 'Log' part...
   alias Log.Reset
   alias Log.Reset.Log
@@ -48,7 +50,7 @@ defmodule Log.Reset.LogPaths do
   def new do
     for {:handler, _handler_id, :logger_std_h,
          %{level: level, config: %{file: path}}} <-
-          Application.get_env(:file_only_logger, :logger, []),
+          get_app_env(:file_only_logger, :logger, []),
         into: %{},
         do: {level, path}
   end
