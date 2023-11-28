@@ -18,10 +18,10 @@ defmodule Log.Reset do
       iex> Reset.log_paths()
       # Listed alphabetically...
       %{
-        debug: ~c"./log/debug.log",
-        error: ~c"./log/error.log",
-        info: ~c"./log/info.log",
-        warning: ~c"./log/warning.log"
+        debug: ~c"#{File.cwd!()}/log/debug.log",
+        error: ~c"#{File.cwd!()}/log/error.log",
+        info: ~c"#{File.cwd!()}/log/info.log",
+        warning: ~c"#{File.cwd!()}/log/warning.log"
       }
   """
   @spec log_paths :: LogPaths.t()

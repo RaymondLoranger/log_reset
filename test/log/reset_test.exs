@@ -12,13 +12,14 @@ defmodule Log.ResetTest do
 
   describe "Reset.log_paths/0" do
     test "returns a map" do
+      root_dir = File.cwd!()
       # Listed alphabetically...
       assert Reset.log_paths() ==
                %{
-                 debug: ~c"./log/debug.log",
-                 error: ~c"./log/error.log",
-                 info: ~c"./log/info.log",
-                 warning: ~c"./log/warning.log"
+                 debug: ~c"#{root_dir}/log/debug.log",
+                 error: ~c"#{root_dir}/log/error.log",
+                 info: ~c"#{root_dir}/log/info.log",
+                 warning: ~c"#{root_dir}/log/warning.log"
                }
     end
   end
