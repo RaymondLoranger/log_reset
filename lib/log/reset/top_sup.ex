@@ -7,7 +7,7 @@ defmodule Log.Reset.TopSup do
   alias Log.Reset
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
-  def start(_start_type, :ok = _start_args) do
+  def start(_start_type, _start_args = :ok) do
     [
       # Child spec relying on `use GenServer`...
       {Server, :ok}
