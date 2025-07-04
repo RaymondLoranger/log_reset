@@ -13,7 +13,7 @@ defmodule Log.Reset.Log do
     """
     \nCould not reset log file...
     • Path: #{inspect(log_path) |> maybe_break(8)}
-    • Reason: #{:file.format_error(reason) |> inspect() |> maybe_break(10)}
+    • Reason: #{"'#{:file.format_error(reason)}'" |> maybe_break(10)}
     #{from(env, __MODULE__)}\
     """
   end
