@@ -10,7 +10,7 @@ defmodule Log.Reset.LogPaths do
   alias Log.Reset.Log
 
   @typedoc "A map assigning configured log paths to their log levels"
-  @type t :: %{Logger.level() => Path.t()}
+  @type t :: %{:logger.level() => Path.t()}
 
   @doc """
   Resets the configured log files of the given `levels`.
@@ -19,6 +19,7 @@ defmodule Log.Reset.LogPaths do
 
       iex> alias Log.Reset.LogPaths
       # The parent app may not configure any file handlers...
+      # Maybe no file handlers are configured...
       iex> LogPaths.reset_logs([], :all)
       :ok
 
@@ -48,11 +49,14 @@ defmodule Log.Reset.LogPaths do
   """
   @spec new :: t
   def new do
-    for {:handler, _handler_id, :logger_std_h,
-         %{level: level, config: %{file: path}}} <-
-          get_app_env(:file_only_logger, :logger, []),
-        into: %{},
-        do: {level, path}
+    import :logger, only: [get_handler_ids: 0, get_handler_config: 1]
+
+    for id <- get_handler_ids(),
+        id not in [:default, :ssl_handler],
+        into: %{} do
+      {:ok, %{config: %{file: path}, level: level}} = get_handler_config(id)
+      {level, path}
+    end
   end
 
   ## Private functions
@@ -69,13 +73,16 @@ defmodule Log.Reset.LogPaths do
 
   @spec log_results([tuple]) :: :ok
   defp log_results(results) do
-    Enum.reduce(results, :ok, fn
-      {:ok, log_path}, _acc ->
-        :ok = Log.info(:log_reset, {log_path, __ENV__})
+    for result <- results, reduce: :ok do
+      :ok ->
+        case result do
+          {:ok, log_path} ->
+            :ok = Log.debug(:log_reset, {log_path, __ENV__})
 
-      {:error, reason, log_path}, _acc ->
-        :ok = Log.error(:log_not_reset, {log_path, reason, __ENV__})
-    end)
+          {:error, reason, log_path} ->
+            :ok = Log.error(:log_not_reset, {log_path, reason, __ENV__})
+        end
+    end
   end
 
   @spec reset_log(Path.t()) :: tuple

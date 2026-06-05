@@ -7,7 +7,7 @@ defmodule Log.Reset do
   alias __MODULE__.LogPaths
 
   @typedoc "Log levels"
-  @type levels :: [Logger.level()] | :all | :none
+  @type levels :: :all | :none | [:logger.level()]
 
   @doc """
   Returns a map of configured log paths.
@@ -16,7 +16,7 @@ defmodule Log.Reset do
 
       iex> alias Log.Reset
       iex> Reset.log_paths()
-      # Listed alphabetically...
+      # Alphabetical list of absolute paths...
       %{
         debug: ~c"#{File.cwd!()}/log/debug.log",
         error: ~c"#{File.cwd!()}/log/error.log",
@@ -44,7 +44,7 @@ defmodule Log.Reset do
       :ok
   """
   @spec reset_logs(levels) :: :ok
-  def reset_logs(levels) do
+  def reset_logs(levels \\ :all) do
     GenServer.call(Server, {:reset_logs, levels})
   end
 end

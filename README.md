@@ -16,22 +16,25 @@ end
 
 ## Usage
 
-As a dependency, this app will (by default) reset __all__ log files
-configured in the parent app at startup.
+As a dependency, this app will (by default) reset <ins>all</ins> log files
+configured in the parent app at <ins>startup</ins>.
 
-The log levels of the log files to be reset can be:
+To reset specific files at <ins>startup</ins>, simply list their log levels
+under the `:levels` key.
 
-- :all (default)
-- :none
-- [[Logger.level()](https://hexdocs.pm/logger/Logger.html#t:level/0)]
-
-You may use file `config/runtime.exs` to configure the above log levels:
+For example, to only reset log files of levels `:debug` and `:info`:
 
 ```elixir
 import Config
 
 config :log_reset, levels: [:debug, :info]
 ```
+
+The log levels of the files to be reset can be:
+
+- :all (default)
+- :none
+- [[Level]](https://hexdocs.pm/logger/Logger.html#module-levels)
 
 After startup, log reset can be performed selectively or globally:
 

@@ -1,7 +1,7 @@
 defmodule Log.Reset.Log do
   use File.Only.Logger
 
-  info :log_reset, {log_path, env} do
+  debug :log_reset, {log_path, env} do
     """
     \nLog file reset successfully...
     • Path: #{inspect(log_path) |> maybe_break(8)}
