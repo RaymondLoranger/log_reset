@@ -20,7 +20,7 @@ As a dependency, this app will (by default) reset <ins>all</ins> log files
 configured in the parent app at <ins>startup</ins>.
 
 To reset specific files at <ins>startup</ins>, simply list their log levels
-under the `:levels` key.
+under the `:levels` key in your config file.
 
 For example, to only reset log files of levels `:debug` and `:info`:
 
