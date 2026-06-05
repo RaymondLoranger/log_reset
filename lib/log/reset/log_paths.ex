@@ -13,18 +13,31 @@ defmodule Log.Reset.LogPaths do
   @type t :: %{:logger.level() => Path.t()}
 
   @doc """
+  Creates a map assigning each configured log path to its log level.
+  """
+  @spec new :: t
+  def new do
+    import :logger, only: [get_handler_ids: 0, get_handler_config: 1]
+
+    for id <- get_handler_ids(),
+        id not in [:default, :ssl_handler],
+        into: %{} do
+      {:ok, %{config: %{file: path}, level: level}} = get_handler_config(id)
+      {level, path}
+    end
+  end
+
+  @doc """
   Resets the configured log files of the given `levels`.
 
   ## Examples
 
       iex> alias Log.Reset.LogPaths
-      # The parent app may not configure any file handlers...
-      # Maybe no file handlers are configured...
-      iex> LogPaths.reset_logs([], :all)
+      iex> LogPaths.reset_logs(%{}, :all) # No handlers configured?
       :ok
 
       iex> alias Log.Reset.LogPaths
-      iex> LogPaths.reset_logs([], [:info, :error])
+      iex> LogPaths.reset_logs(%{}, [:info, :error]) # No handlers either?
       :ok
   """
   @spec reset_logs(t, Reset.levels()) :: :ok
@@ -42,22 +55,7 @@ defmodule Log.Reset.LogPaths do
     |> reset_logs()
   end
 
-  def reset_logs(_log_paths, _), do: :ok
-
-  @doc """
-  Creates a map assigning each configured log path to its log level.
-  """
-  @spec new :: t
-  def new do
-    import :logger, only: [get_handler_ids: 0, get_handler_config: 1]
-
-    for id <- get_handler_ids(),
-        id not in [:default, :ssl_handler],
-        into: %{} do
-      {:ok, %{config: %{file: path}, level: level}} = get_handler_config(id)
-      {level, path}
-    end
-  end
+  def reset_logs(_log_paths, _levels), do: :ok
 
   ## Private functions
 

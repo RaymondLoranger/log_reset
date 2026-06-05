@@ -28,7 +28,7 @@ defmodule Log.Reset do
   def log_paths, do: GenServer.call(Server, :log_paths)
 
   @doc """
-  Refreshes the map of configured log paths from the application environment.
+  Refreshes the map of configured log paths.
   """
   @spec refresh_log_paths :: LogPaths.t()
   def refresh_log_paths, do: GenServer.call(Server, :refresh)
